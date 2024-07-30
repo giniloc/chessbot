@@ -1,9 +1,9 @@
 package com.example.chessbot;
 
+import Pieces.Pawn;
+import Pieces.Piece;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
@@ -11,14 +11,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-import java.util.Objects;
-
 public class ChessScene extends Application {
 
     public static final int TILE_SIZE = 100;
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         GridPane gridPane = new GridPane();
 
         for (int row = 0; row < 8; row++) {
@@ -46,30 +44,37 @@ public class ChessScene extends Application {
             gridPane.getRowConstraints().add(rowConst);
         }
 
-        // Add chess pieces
-        String[][] board = {
-                {"blackRook", "blackKnight", "blackBishop", "blackQueen", "blackKing", "blackBishop", "blackKnight", "blackRook"},
-                {"blackPawn", "blackPawn", "blackPawn", "blackPawn", "blackPawn", "blackPawn", "blackPawn", "blackPawn"},
-                {"", "", "", "", "", "", "", ""},
-                {"", "", "", "", "", "", "", ""},
-                {"", "", "", "", "", "", "", ""},
-                {"", "", "", "", "", "", "", ""},
-                {"whitePawn", "whitePawn", "whitePawn", "whitePawn", "whitePawn", "whitePawn", "whitePawn", "whitePawn"},
-                {"whiteRook", "whiteKnight", "whiteBishop", "whiteQueen", "whiteKing", "whiteBishop", "whiteKnight", "whiteRook"}
-        };
+        // Create and add chess pieces
+        Piece[][] board = new Piece[8][8];
+        board[1][0] = new Pawn(1, 0, false);
+        board[1][1] = new Pawn(1, 1, false);
+        board[1][2] = new Pawn(1, 2, false);
+        board[1][3] = new Pawn(1, 3, false);
+        board[1][4] = new Pawn(1, 4, false);
+        board[1][5] = new Pawn(1, 5, false);
+        board[1][6] = new Pawn(1, 6, false);
+        board[1][7] = new Pawn(1, 7, false);
+
+        // Add more pieces here...
+        board[6][0] = new Pawn(6, 0, true);
+        board[6][1] = new Pawn(6, 1, true);
+        board[6][2] = new Pawn(6, 2, true);
+        board[6][3] = new Pawn(6, 3, true);
+        board[6][4] = new Pawn(6, 4, true);
+        board[6][5] = new Pawn(6, 5, true);
+        board[6][6] = new Pawn(6, 6, true);
+        board[6][7] = new Pawn(6, 7, true);
+
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
-                String piece = board[row][col];
-                if (!piece.isEmpty()) {
-                    Image image = new Image(getClass().getResourceAsStream("/" + piece + ".png"));
-                    ImageView imageView = new ImageView(image);
-                    imageView.fitWidthProperty().bind(gridPane.widthProperty().divide(8));
-                    imageView.fitHeightProperty().bind(gridPane.heightProperty().divide(8));
-                    gridPane.add(imageView, col, row);
+                Piece piece = board[row][col];
+                if (piece != null) {
+                    gridPane.add(piece, col, row);
+                    piece.fitWidthProperty().bind(gridPane.widthProperty().divide(8));
+                    piece.fitHeightProperty().bind(gridPane.heightProperty().divide(8));
                 }
             }
         }
-
 
         Scene scene = new Scene(gridPane, TILE_SIZE * 8, TILE_SIZE * 8);
 
