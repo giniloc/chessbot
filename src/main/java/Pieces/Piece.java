@@ -1,6 +1,9 @@
 package Pieces;
 
 import java.util.*;
+
+import Utils.Board;
+import Utils.Coordinate;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -9,10 +12,9 @@ public abstract class Piece extends ImageView {
     protected int row;
     protected int col;
     protected boolean isWhite;
-    //TODO: van board klasse maken in plaats van 2d array
-    protected Piece[][] board;
+    protected Board board;
 
-    public Piece(int row, int col, boolean isWhite, String imageName, Piece[][] board) {
+    public Piece(int row, int col, boolean isWhite, String imageName, Board board) {
         this.row = row;
         this.col = col;
         this.isWhite = isWhite;
@@ -23,12 +25,10 @@ public abstract class Piece extends ImageView {
     }
 
 
-    //TODO: board als internal value zetten
     public abstract boolean isValidMove(int newRow, int newCol);
 
     //Return: alle legal coords waar piece naar kan moven in vorm van int list met 2 values (row, column)
-    //TODO: int[] vervangen door coords klasse
-    public abstract ArrayList<int[]> getValidMoves();
+    public abstract ArrayList<Coordinate> getValidMoves();
 
     public void move(int newRow, int newCol) {
         this.row = newRow;
