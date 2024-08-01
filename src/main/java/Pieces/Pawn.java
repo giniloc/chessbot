@@ -6,12 +6,18 @@ import Utils.Coordinate;
 import java.util.ArrayList;
 
 public class Pawn extends Piece {
+    private boolean hasMoved;
+
     public Pawn(int row, int col, boolean isWhite, Board board) {
         super(row, col, isWhite, isWhite ? "whitePawn.png" : "blackPawn.png", board);
+        this.hasMoved = false;
     }
 
     @Override
-    public boolean isValidMove(int newRow, int newCol) {
+    public boolean isValidMove(Coordinate newCoords) {
+
+        //Hier zeker checken of een move suicide is
+
         return false;
     }
 
@@ -33,8 +39,33 @@ public class Pawn extends Piece {
                     TODO: boolean justJumped toevoegen en 1 beurt true laten staan.
                     TODO: uitzoeken hoe het best de en passant weg te halen
              Check voor elke potentiele move of legal is en voeg toe aan validmoves coordlist
+             check of move voor promotion zorgt
+             TODO: uitzoeken hoe promotion gaat werken, fck me :)
 
              */
+
+            //Huidige positie opvragen
+            int currRow = coords.getRow();
+            int currCol = coords.getCol();
+
+            ArrayList<Coordinate> potentialMoves = new ArrayList<>();
+
+            for(int i=-1; i<=1; i++){
+                potentialMoves.add(new Coordinate(currRow+1, currCol+i));
+            }
+
+            if(!hasMoved) potentialMoves.add(new Coordinate(currRow, currCol+2));
+
+            for(Coordinate coord: potentialMoves){
+                if(isValidMove(coord)) validMoves.add(coord);
+            }
+
+
+
+
+
+
+
         } else {
 
         }
@@ -43,7 +74,7 @@ public class Pawn extends Piece {
     }
 
     @Override
-    public boolean isSuicideMove() {
+    public boolean isSuicideMove(Coordinate newCoords) {
         return false;
     }
 }

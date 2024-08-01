@@ -14,7 +14,7 @@ public class Knight extends Piece {
 
 
     @Override
-    public boolean isValidMove(int newRow, int newCol) {
+    public boolean isValidMove(Coordinate newCoords) {
         return false;
     }
 
@@ -24,7 +24,7 @@ public class Knight extends Piece {
     }
 
     @Override
-    public boolean isSuicideMove() {
+    public boolean isSuicideMove(Coordinate newCoords) {
         return false;
     }
 }

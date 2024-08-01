@@ -11,12 +11,14 @@ public abstract class Piece extends ImageView {
 
     protected int row;
     protected int col;
+    protected Coordinate coords;
     protected boolean isWhite;
     protected Board board;
 
     public Piece(int row, int col, boolean isWhite, String imageName, Board board) {
         this.row = row;
         this.col = col;
+        this.coords = new Coordinate(row, col);
         this.isWhite = isWhite;
         this.board = board;
         // Laad de afbeelding en stel deze in op de ImageView
@@ -25,16 +27,18 @@ public abstract class Piece extends ImageView {
     }
 
 
-    public abstract boolean isValidMove(int newRow, int newCol);
+    public abstract boolean isValidMove(Coordinate newCoords);
 
     //Return: alle legal coords waar piece naar kan moven in vorm van int list met 2 values (row, column)
     public abstract ArrayList<Coordinate> getValidMoves();
 
-    public abstract boolean isSuicideMove();
+    //Idee: Dit gewoon algemeen implementen. Checken of een nieuwe move out of bounds is en of ge uzelf schaak zet als ge de move doet
+    public abstract boolean isSuicideMove(Coordinate newCoords);
 
-    public void move(int newRow, int newCol) {
-        this.row = newRow;
-        this.col = newCol;
+    public void move(Coordinate coords) {
+        this.row = coords.getRow();
+        this.col = coords.getCol();
+        this.coords = coords;
     }
 
     public int getRow() {
