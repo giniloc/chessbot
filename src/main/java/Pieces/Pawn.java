@@ -41,4 +41,9 @@ public class Pawn extends Piece {
 
         return validMoves;
     }
+
+    @Override
+    public boolean isSuicideMove() {
+        return false;
+    }
 }

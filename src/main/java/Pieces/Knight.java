@@ -22,4 +22,9 @@ public class Knight extends Piece {
     public ArrayList<Coordinate> getValidMoves() {
         return null;
     }
+
+    @Override
+    public boolean isSuicideMove() {
+        return false;
+    }
 }

@@ -30,6 +30,8 @@ public abstract class Piece extends ImageView {
     //Return: alle legal coords waar piece naar kan moven in vorm van int list met 2 values (row, column)
     public abstract ArrayList<Coordinate> getValidMoves();
 
+    public abstract boolean isSuicideMove();
+
     public void move(int newRow, int newCol) {
         this.row = newRow;
         this.col = newCol;
