@@ -58,7 +58,7 @@ public class ChessScene extends Application {
         // Initialize pawns
         for (int col = 0; col < 8; col++) {
             board.placePiece(new Pawn(1, col, false, board), 1, col);
-            board.placePiece(new Pawn(6, col, true, board), 6, col);
+            board.placePiece(new Pawn(6, col, false, board), 6, col);
         }
 
         // Initialize other pieces
