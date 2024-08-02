@@ -1,30 +1,49 @@
 package Utils;
 
 import Pieces.Piece;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 public class Board {
 
     private Piece[][] board;
     private int rows;
     private int cols;
+    private Rectangle[][] tiles;
 
     public Board(int rows, int cols) {
         this.rows = rows;
         this.cols = cols;
         board = new Piece[rows][cols];
+        tiles = new Rectangle[rows][cols];
+    }
+
+    public void highlightTile(int row, int col, Color color) {
+        if (row >= 0 && row < rows && col >= 0 && col < cols) {
+            tiles[row][col].setFill(color);
+        }
+    }
+
+    public Piece getPiece(int row, int col) {
+        if (row >= 0 && row < rows && col >= 0 && col < cols) {
+            return board[row][col];
+        }
+        return null;
     }
 
     public void placePiece(Piece piece, int row, int col) {
         board[row][col] = piece;
     }
 
-    public Piece getPiece(int row, int col) {
-        return board[row][col];
+    public int getRows() {
+        return rows;
     }
 
-    public void movePiece(int fromRow, int fromCol, int toRow, int toCol) {
-        Piece piece = board[fromRow][fromCol];
-        board[fromRow][fromCol] = null;
-        board[toRow][toCol] = piece;
+    public int getCols() {
+        return cols;
+    }
+
+    public void setTile(Rectangle rect, int row, int col) {
+        tiles[row][col] = rect;
     }
 }

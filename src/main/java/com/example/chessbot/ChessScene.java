@@ -31,6 +31,7 @@ public class ChessScene extends Application {
                 rect.widthProperty().bind(gridPane.widthProperty().divide(8));
                 rect.heightProperty().bind(gridPane.heightProperty().divide(8));
                 gridPane.add(rect, col, row);
+                board.setTile(rect, row, col); // Voeg deze regel toe
             }
         }
 

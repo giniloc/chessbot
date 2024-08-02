@@ -1,11 +1,13 @@
 package Pieces;
 
-import java.util.*;
-
 import Utils.Board;
 import Utils.Coordinate;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+
+import java.util.ArrayList;
 
 public abstract class Piece extends ImageView {
 
@@ -24,15 +26,28 @@ public abstract class Piece extends ImageView {
         // Laad de afbeelding en stel deze in op de ImageView
         Image image = new Image(getClass().getResourceAsStream("/" + imageName));
         this.setImage(image);
+
+        // Voeg mouse event listener toe
+        this.setOnMouseClicked(this::handleMouseClick);
     }
 
+    private void handleMouseClick(MouseEvent event) {
+        highlightValidMoves();
+    }
+
+    protected void highlightValidMoves() {
+        ArrayList<Coordinate> validMoves = getValidMoves();
+        for (Coordinate move : validMoves) {
+            int row = move.getRow();
+            int col = move.getCol();
+            board.highlightTile(row, col, Color.RED);
+        }
+    }
 
     public abstract boolean isValidMove(Coordinate newCoords);
 
-    //Return: alle legal coords waar piece naar kan moven in vorm van int list met 2 values (row, column)
     public abstract ArrayList<Coordinate> getValidMoves();
 
-    //Idee: Dit gewoon algemeen implementen. Checken of een nieuwe move out of bounds is en of ge uzelf schaak zet als ge de move doet
     public abstract boolean isSuicideMove(Coordinate newCoords);
 
     public void move(Coordinate coords) {
