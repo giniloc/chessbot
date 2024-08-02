@@ -15,12 +15,35 @@ public class Knight extends Piece {
 
     @Override
     public boolean isValidMove(Coordinate newCoords) {
-        return false;
+
+        Piece destinationPiece = board.getPiece(newCoords.getRow(), newCoords.getCol());
+        if (destinationPiece != null && destinationPiece.isWhite == this.isWhite) {
+            return false;
+        }
+
+        return true;
     }
 
     @Override
     public ArrayList<Coordinate> getValidMoves() {
-        return null;
+        ArrayList<Coordinate> validMoves = new ArrayList<>();
+
+        // Hier alle moves uitvoeren die in dezelfde rij komen als de rook
+        for (int i = 0; i < board.getRows(); i++) {
+            for (int j = 0; j < board.getCols(); j++) {
+                if ((i == this.row + 1 && j == this.col + 2) || (i == this.row + 2 && j == this.col + 1) || (i == this.row + 2 && j == this.col - 1)
+                        || (i == this.row + 1 && j == this.col - 2) || (i == this.row - 1 && j == this.col - 2)
+                        || (i == this.row - 2 && j == this.col - 1) || (i == this.row - 2 && j == this.col + 1) || (i == this.row - 1 && j == this.col + 2)) {
+                    Coordinate newCoords = new Coordinate(i, j);
+                    if (isValidMove(newCoords)) {
+                        validMoves.add(newCoords);
+                    }
+                }
+            }
+        }
+
+
+        return validMoves;
     }
 
     @Override
