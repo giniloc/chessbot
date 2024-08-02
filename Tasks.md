@@ -27,3 +27,8 @@
 5. Bewegen testen (Zonder UI)
 6. UI laten volgen 
 7. Bot implementen
+
+
+
+### Belangrijke dingen voor in de code maar er nog nie echt in passen voorlopig
+1. en passant bij pionnen weghalen als kans gemist is
