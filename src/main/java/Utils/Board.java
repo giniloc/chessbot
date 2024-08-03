@@ -24,6 +24,18 @@ public class Board {
         }
     }
 
+    public void resetTileColors() {
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                if ((row + col) % 2 == 0) {
+                    tiles[row][col].setFill(Color.WHITE);
+                } else {
+                    tiles[row][col].setFill(Color.GRAY);
+                }
+            }
+        }
+    }
+
     public Piece getPiece(int row, int col) {
         if (row >= 0 && row < rows && col >= 0 && col < cols) {
             return board[row][col];

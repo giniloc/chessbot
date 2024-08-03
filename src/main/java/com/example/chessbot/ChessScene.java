@@ -31,7 +31,8 @@ public class ChessScene extends Application {
                 rect.widthProperty().bind(gridPane.widthProperty().divide(8));
                 rect.heightProperty().bind(gridPane.heightProperty().divide(8));
                 gridPane.add(rect, col, row);
-                board.setTile(rect, row, col); // Voeg deze regel toe
+                board.setTile(rect, row, col);
+
             }
         }
 
@@ -58,7 +59,7 @@ public class ChessScene extends Application {
         // Initialize pawns
         for (int col = 0; col < 8; col++) {
             board.placePiece(new Pawn(1, col, false, board), 1, col);
-            board.placePiece(new Pawn(6, col, false, board), 6, col);
+            board.placePiece(new Pawn(6, col, true, board), 6, col);
         }
 
         // Initialize other pieces
@@ -95,6 +96,7 @@ public class ChessScene extends Application {
             }
         }
     }
+
 
     public static void main(String[] args) {
         launch(args);

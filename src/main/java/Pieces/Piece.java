@@ -63,4 +63,16 @@ public abstract class Piece extends ImageView {
     public int getCol() {
         return col;
     }
+
+    public boolean isWhite() {
+        return isWhite;
+    }
+
+    public void setRow(int row) {
+        this.row = row;
+    }
+
+    public void setCol(int col) {
+        this.col = col;
+    }
 }
