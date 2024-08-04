@@ -32,6 +32,13 @@ public abstract class Piece extends ImageView {
     }
 
     private void handleMouseClick(MouseEvent event) {
+        // Reset tile colors on the board before showing the new valid moves
+        board.resetTileColors();
+
+        // Update the selected piece in the board
+        board.setSelectedPiece(this);
+
+        // Highlight valid moves for the selected piece
         highlightValidMoves();
     }
 

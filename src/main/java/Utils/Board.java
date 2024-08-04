@@ -58,4 +58,7 @@ public class Board {
     public void setTile(Rectangle rect, int row, int col) {
         tiles[row][col] = rect;
     }
+
+    public void setSelectedPiece(Piece piece) {
+    }
 }
