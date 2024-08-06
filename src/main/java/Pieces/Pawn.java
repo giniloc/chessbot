@@ -22,29 +22,30 @@ public class Pawn extends Piece {
 
 
         //snelle out of bounds check
-        if(!(newCoords.getRow()<=board.getRows() && newCoords.getRow() > 0 && newCoords.getCol()<=board.getCols() && newCoords.getCol() > 0)){
+        if(!(newCoords.getRow()<board.getRows() && newCoords.getRow() > 0 && newCoords.getCol()<board.getCols() && newCoords.getCol() > 0)){
             return false;
         }
 
         //geen out of bounds, check of stukken in de weg staan.
         if(isWhite){
             //movement wit
-            if (newCoords.getCol() - coords.getCol() == 1){
+            if (newCoords.getRow() - coords.getRow() == 1){
                 //1 vooruit bewegen
                 switch(newCoords.getCol() - coords.getCol()) {
                     case -1:
                         //linksdiagonaal bewegen
-                        if((board.getPiece(newCoords.getRow(), newCoords.getCol()) == null) | !(board.getPiece(newCoords.getRow(), newCoords.getCol()).isWhite)){
-                            return true;
-                        }
-                        //en passant check
-                        Piece enpassantPion = board.getPiece(coords.getRow(), coords.getCol()-1);
-                        if (enpassantPion instanceof Pawn && !enpassantPion.isWhite){
-                            if(((Pawn) enpassantPion).justJumped){
-                                return true;
+                        if(board.getPiece(newCoords.getRow(), newCoords.getCol()) == null){
+                            //en passant check
+                            Piece enpassantPion = board.getPiece(coords.getRow(), coords.getCol()-1);
+                            if (enpassantPion instanceof Pawn && !enpassantPion.isWhite){
+                                if(((Pawn) enpassantPion).justJumped){
+                                    return true;
+                                }
                             }
+                            return false;
+                        } else{
+                            return !board.getPiece(newCoords.getRow(), newCoords.getCol()).isWhite;
                         }
-                        break;
                     case 0:
                         //rechtdoor bewegen
                         if(board.getPiece(newCoords.getRow(), newCoords.getCol()) == null){
@@ -53,18 +54,18 @@ public class Pawn extends Piece {
                         break;
                     case 1:
                         //rechtsdiagonaal bewegen
-                        if((board.getPiece(newCoords.getRow(), newCoords.getCol()) == null) || !(board.getPiece(newCoords.getRow(), newCoords.getCol()).isWhite)){
-                            return true;
-                        }
-
-                        //en passant check
-                        Piece enpassantPion2 = board.getPiece(coords.getRow(), coords.getCol()+1);
-                        if (enpassantPion2 instanceof Pawn && !enpassantPion2.isWhite){
-                            if(((Pawn) enpassantPion2).justJumped){
-                                return true;
+                        if(board.getPiece(newCoords.getRow(), newCoords.getCol()) == null){
+                            //en passant check
+                            Piece enpassantPion2 = board.getPiece(coords.getRow(), coords.getCol()+1);
+                            if (enpassantPion2 instanceof Pawn && !enpassantPion2.isWhite){
+                                if(((Pawn) enpassantPion2).justJumped){
+                                    return true;
+                                }
                             }
+                            return false;
+                        } else{
+                            return !board.getPiece(newCoords.getRow(), newCoords.getCol()).isWhite();
                         }
-                        break;
                     default:
                         return false;
                 }
@@ -72,7 +73,7 @@ public class Pawn extends Piece {
                 //2 vooruit bewegen
                 boolean valid = true;
                 for(int i=0; i<2;i++){
-                    if(board.getPiece(newCoords.getRow()-i, newCoords.getCol()) != null){
+                    if(board.getPiece(newCoords.getRow()+i, newCoords.getCol()) != null){
                         valid = false;
                     }
                 }
@@ -80,22 +81,23 @@ public class Pawn extends Piece {
             }
         } else {
             //movement zwart
-            if(coords.getCol() - newCoords.getCol() == 1){
+            if(coords.getRow() - newCoords.getRow() == 1){
                 //1 vooruit bewegen
                 switch(newCoords.getCol() - coords.getCol()) {
                     case -1:
                         //linksdiagonaal bewegen
-                        if((board.getPiece(newCoords.getRow(), newCoords.getCol()) == null) | !(board.getPiece(newCoords.getRow(), newCoords.getCol()).isWhite)){
-                            return true;
-                        }
-                        //en passant check
-                        Piece enpassantPion = board.getPiece(coords.getRow(), coords.getCol()-1);
-                        if(enpassantPion instanceof Pawn && enpassantPion.isWhite){
-                            if(((Pawn) enpassantPion).justJumped){
-                                return true;
+                        if(board.getPiece(newCoords.getRow(), newCoords.getCol()) == null){
+                            //en passant check
+                            Piece enpassantPion = board.getPiece(coords.getRow(), coords.getCol()-1);
+                            if(enpassantPion instanceof Pawn && enpassantPion.isWhite){
+                                if(((Pawn) enpassantPion).justJumped){
+                                    return true;
+                                }
                             }
+                            return false;
+                        } else{
+                            return board.getPiece(newCoords.getRow(), newCoords.getCol()).isWhite;
                         }
-                        break;
                     case 0:
                         //rechtdoor bewegen
                         if(board.getPiece(newCoords.getRow(), newCoords.getCol()) == null){
@@ -105,15 +107,17 @@ public class Pawn extends Piece {
                     case 1:
                         //rechtsdiagonaal bewegen
                         if((board.getPiece(newCoords.getRow(), newCoords.getCol()) == null) | !(board.getPiece(newCoords.getRow(), newCoords.getCol()).isWhite)){
-                            return true;
-                        }
-                        Piece enpassantPion2 = board.getPiece(coords.getRow(), coords.getCol()-1);
-                        if(enpassantPion2 instanceof Pawn && enpassantPion2.isWhite){
-                            if(((Pawn) enpassantPion2).justJumped){
-                                return true;
+                            //en passant check
+                            Piece enpassantPion2 = board.getPiece(coords.getRow(), coords.getCol()-1);
+                            if(enpassantPion2 instanceof Pawn && enpassantPion2.isWhite){
+                                if(((Pawn) enpassantPion2).justJumped){
+                                    return true;
+                                }
                             }
+                            return false;
+                        } else{
+                            return board.getPiece(newCoords.getRow(), newCoords.getCol()).isWhite;
                         }
-                        break;
                     default:
                         return false;
                 }
@@ -121,7 +125,7 @@ public class Pawn extends Piece {
                 //2 vooruit bewegen
                 boolean valid = true;
                 for(int i=0; i<2;i++){
-                    if(board.getPiece(newCoords.getRow()+i, newCoords.getCol()) != null) {
+                    if(board.getPiece(newCoords.getRow()-i, newCoords.getCol()) != null) {
                         valid = false;
                     }
                 }
@@ -142,10 +146,18 @@ public class Pawn extends Piece {
         if (isWhite){
             //1 vooruit
             for(int i=-1; i<=1; i++){
-                potentialMoves.add(new Coordinate(currRow+1, currCol+i));
+                potentialMoves.add(new Coordinate(currRow-1, currCol+i));
+                System.out.println("1 Vooruit White");
+                System.out.println("potential move: " + (currRow-1) + ", " + (currCol+i));
             }
             //2 vooruit
-            if(!hasMoved) potentialMoves.add(new Coordinate(currRow+2, currCol));
+            if(!hasMoved) {
+                potentialMoves.add(new Coordinate(currRow-2, currCol));
+                System.out.println("2 Vooruit White");
+
+                System.out.println("potential move: " + (currRow-2) + ", " + currCol);
+
+            }
 
             //checken welke moves valid zijn
             for(Coordinate coord: potentialMoves){
@@ -154,18 +166,32 @@ public class Pawn extends Piece {
         } else {
             //1 vooruit
             for(int i=-1; i<=1; i++){
-                potentialMoves.add(new Coordinate(currRow-1, currCol+i));
+                potentialMoves.add(new Coordinate(currRow+1, currCol+i));
+                System.out.println("1 Vooruit Black");
+
+                System.out.println("potential move: " + (currRow+1) + ", " + (currCol+i));
+
             }
             //2 vooruit
-            if(!hasMoved) potentialMoves.add(new Coordinate(currRow-2, currCol));
+            if(!hasMoved) {
+                potentialMoves.add(new Coordinate(currRow+2, currCol));
+                System.out.println("2 Vooruit Black");
+
+                System.out.println("potential move: " + (currRow+2) + ", " + currCol);
+
+            }
 
             //checken of valid zijn
             for(Coordinate coord: potentialMoves) {
                 if (isValidMove(coord) && !isSuicideMove(coord)) validMoves.add(coord);
             }
         }
+        for(int i=0; i < validMoves.size(); i++) {
+            System.out.println(validMoves.get(i).toString());
+        }
+        System.out.println("End move");
 
-        return validMoves;
+        ;        return validMoves;
     }
 
     @Override
