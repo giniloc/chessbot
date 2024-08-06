@@ -14,11 +14,12 @@ import javafx.stage.Stage;
 public class ChessScene extends Application {
 
     public static final int TILE_SIZE = 100;
-    private Board board = new Board(8, 8);
+    private Board board;
 
     @Override
     public void start(Stage primaryStage) {
         GridPane gridPane = new GridPane();
+        board = new Board(8, 8, gridPane);
 
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
@@ -32,7 +33,6 @@ public class ChessScene extends Application {
                 rect.heightProperty().bind(gridPane.heightProperty().divide(8));
                 gridPane.add(rect, col, row);
                 board.setTile(rect, row, col);
-
             }
         }
 
@@ -58,45 +58,39 @@ public class ChessScene extends Application {
     private void setupPieces(GridPane gridPane) {
         // Initialize pawns
         for (int col = 0; col < 8; col++) {
-            board.placePiece(new Pawn(1, col, false, board), 1, col);
-            board.placePiece(new Pawn(6, col, true, board), 6, col);
+            addPiece(new Pawn(1, col, false, board), gridPane);
+            addPiece(new Pawn(6, col, true, board), gridPane);
         }
 
         // Initialize other pieces
-        board.placePiece(new Rook(0, 0, false, board), 0, 0);
-        board.placePiece(new Rook(0, 7, false, board), 0, 7);
-        board.placePiece(new Rook(7, 0, true, board), 7, 0);
-        board.placePiece(new Rook(7, 7, true, board), 7, 7);
+        addPiece(new Rook(0, 0, false, board), gridPane);
+        addPiece(new Rook(0, 7, false, board), gridPane);
+        addPiece(new Rook(7, 0, true, board), gridPane);
+        addPiece(new Rook(7, 7, true, board), gridPane);
 
-        board.placePiece(new Knight(0, 1, false, board), 0, 1);
-        board.placePiece(new Knight(0, 6, false, board), 0, 6);
-        board.placePiece(new Knight(7, 1, true, board), 7, 1);
-        board.placePiece(new Knight(7, 6, true, board), 7, 6);
+        addPiece(new Knight(0, 1, false, board), gridPane);
+        addPiece(new Knight(0, 6, false, board), gridPane);
+        addPiece(new Knight(7, 1, true, board), gridPane);
+        addPiece(new Knight(7, 6, true, board), gridPane);
 
-        board.placePiece(new Bishop(0, 2, false, board), 0, 2);
-        board.placePiece(new Bishop(0, 5, false, board), 0, 5);
-        board.placePiece(new Bishop(7, 2, true, board), 7, 2);
-        board.placePiece(new Bishop(7, 5, true, board), 7, 5);
+        addPiece(new Bishop(0, 2, false, board), gridPane);
+        addPiece(new Bishop(0, 5, false, board), gridPane);
+        addPiece(new Bishop(7, 2, true, board), gridPane);
+        addPiece(new Bishop(7, 5, true, board), gridPane);
 
-        board.placePiece(new Queen(0, 3, false, board), 0, 3);
-        board.placePiece(new Queen(7, 3, true, board), 7, 3);
+        addPiece(new Queen(0, 3, false, board), gridPane);
+        addPiece(new Queen(7, 3, true, board), gridPane);
 
-        board.placePiece(new King(0, 4, false, board), 0, 4);
-        board.placePiece(new King(7, 4, true, board), 7, 4);
-
-        // Add pieces to the grid
-        for (int row = 0; row < 8; row++) {
-            for (int col = 0; col < 8; col++) {
-                Piece piece = board.getPiece(row, col);
-                if (piece != null) {
-                    piece.fitWidthProperty().bind(gridPane.widthProperty().divide(8));
-                    piece.fitHeightProperty().bind(gridPane.heightProperty().divide(8));
-                    gridPane.add(piece, col, row);
-                }
-            }
-        }
+        addPiece(new King(0, 4, false, board), gridPane);
+        addPiece(new King(7, 4, true, board), gridPane);
     }
 
+    public void addPiece(Piece piece, GridPane gridPane) {
+        board.placePiece(piece, piece.getRow(), piece.getCol());
+        piece.fitWidthProperty().bind(gridPane.widthProperty().divide(8));
+        piece.fitHeightProperty().bind(gridPane.heightProperty().divide(8));
+        gridPane.add(piece, piece.getCol(), piece.getRow());
+    }
 
     public static void main(String[] args) {
         launch(args);

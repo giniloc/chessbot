@@ -2,6 +2,7 @@ package Pieces;
 
 import Utils.Board;
 import Utils.Coordinate;
+import com.example.chessbot.ChessScene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -17,12 +18,13 @@ public abstract class Piece extends ImageView {
     protected boolean isWhite;
     protected Board board;
 
-    public Piece(int row, int col, boolean isWhite, String imageName, Board board) {
+    public Piece(int row, int col, boolean isWhite,String imageName, Board board) {
         this.row = row;
         this.col = col;
         this.coords = new Coordinate(row, col);
         this.isWhite = isWhite;
         this.board = board;
+        // Laad de afbeelding en stel deze in op de ImageView
         // Laad de afbeelding en stel deze in op de ImageView
         Image image = new Image(getClass().getResourceAsStream("/" + imageName));
         this.setImage(image);
@@ -32,13 +34,13 @@ public abstract class Piece extends ImageView {
     }
 
     private void handleMouseClick(MouseEvent event) {
-        // Reset tile colors on the board before showing the new valid moves
+        // Reset tegelkleuren op het bord voordat de nieuwe geldige zetten worden getoond
         board.resetTileColors();
 
-        // Update the selected piece in the board
+        // Werk het geselecteerde stuk bij op het bord
         board.setSelectedPiece(this);
 
-        // Highlight valid moves for the selected piece
+        // Markeer geldige zetten voor het geselecteerde stuk
         highlightValidMoves();
     }
 
@@ -58,10 +60,25 @@ public abstract class Piece extends ImageView {
     public abstract boolean isSuicideMove(Coordinate newCoords);
 
     public void move(Coordinate coords) {
+        // Verwijder het stuk van de oude locatie op het bord
+        board.removePiece(this.row, this.col);
+
+        // Update de interne coördinaten
         this.row = coords.getRow();
         this.col = coords.getCol();
         this.coords = coords;
+
+        // Plaats het stuk op de nieuwe locatie op het bord
+        board.placePiece(this, row, col);
+
+        // Update de positie van de afbeelding in de UI
+        this.setLayoutX(col * 100);
+        this.setLayoutY(row * 100);
+        board.addPiece(this);
+
+
     }
+
 
     public int getRow() {
         return row;

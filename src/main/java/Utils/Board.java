@@ -1,6 +1,7 @@
 package Utils;
 
 import Pieces.Piece;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -10,10 +11,13 @@ public class Board {
     private int rows;
     private int cols;
     private Rectangle[][] tiles;
+    private Piece selectedPiece;
+    private GridPane gridPane;
 
-    public Board(int rows, int cols) {
+    public Board(int rows, int cols, GridPane gridPane) {
         this.rows = rows;
         this.cols = cols;
+        this.gridPane = gridPane;
         board = new Piece[rows][cols];
         tiles = new Rectangle[rows][cols];
     }
@@ -45,6 +49,18 @@ public class Board {
 
     public void placePiece(Piece piece, int row, int col) {
         board[row][col] = piece;
+        if (piece != null) {
+            piece.setRow(row);
+            piece.setCol(col);
+        }
+    }
+
+    public void removePiece(int row, int col) {
+        Piece piece = board[row][col];
+        if (piece != null) {
+            gridPane.getChildren().remove(piece);
+        }
+        board[row][col] = null;
     }
 
     public int getRows() {
@@ -57,8 +73,32 @@ public class Board {
 
     public void setTile(Rectangle rect, int row, int col) {
         tiles[row][col] = rect;
+
+        // Voeg event handler toe aan de tegel
+        rect.setOnMouseClicked(event -> {
+            handleTileClick(row, col);
+        });
     }
 
     public void setSelectedPiece(Piece piece) {
+        this.selectedPiece = piece;
+    }
+
+    private void handleTileClick(int row, int col) {
+        // Als een stuk is geselecteerd en een geldige beweging is, verplaats het stuk
+        if (selectedPiece != null && selectedPiece.isValidMove(new Coordinate(row, col))) {
+            // Verplaats het stuk
+            selectedPiece.move(new Coordinate(row, col));
+
+            // Reset de geselecteerde stuk
+            selectedPiece = null;
+
+            // Reset tegelkleuren
+            resetTileColors();
+        }
+    }
+
+    public void addPiece(Piece piece) {
+        gridPane.add(piece, piece.getCol(), piece.getRow());
     }
 }
