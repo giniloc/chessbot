@@ -17,5 +17,9 @@ public class Coordinate {
         return col;
     }
 
+    @Override
+    public String toString() {
+        return "Coordinate{" + "row=" + row + ", col=" + col + '}';
+    }
 
 }

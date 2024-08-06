@@ -25,7 +25,6 @@ public abstract class Piece extends ImageView {
         this.isWhite = isWhite;
         this.board = board;
         // Laad de afbeelding en stel deze in op de ImageView
-        // Laad de afbeelding en stel deze in op de ImageView
         Image image = new Image(getClass().getResourceAsStream("/" + imageName));
         this.setImage(image);
 
@@ -60,6 +59,7 @@ public abstract class Piece extends ImageView {
     public abstract boolean isSuicideMove(Coordinate newCoords);
 
     public void move(Coordinate coords) {
+        Coordinate oldCoords = this.coords;
 
         // Verwijder het stuk van de oude locatie op het bord
         board.removePiece(this.row, this.col);
@@ -78,6 +78,7 @@ public abstract class Piece extends ImageView {
         if (this.board.getTileColor(row, col) == Color.RED) {
             board.addPiece(this);
         }
+        System.out.println("Moved piece from " + oldCoords + " to " + this.coords);
     }
 
 
