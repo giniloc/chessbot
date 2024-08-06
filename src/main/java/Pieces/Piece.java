@@ -60,6 +60,7 @@ public abstract class Piece extends ImageView {
     public abstract boolean isSuicideMove(Coordinate newCoords);
 
     public void move(Coordinate coords) {
+
         // Verwijder het stuk van de oude locatie op het bord
         board.removePiece(this.row, this.col);
 
@@ -74,9 +75,9 @@ public abstract class Piece extends ImageView {
         // Update de positie van de afbeelding in de UI
         this.setLayoutX(col * 100);
         this.setLayoutY(row * 100);
-        board.addPiece(this);
-
-
+        if (this.board.getTileColor(row, col) == Color.RED) {
+            board.addPiece(this);
+        }
     }
 
 

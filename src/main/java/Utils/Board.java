@@ -3,6 +3,7 @@ package Utils;
 import Pieces.Piece;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 
 public class Board {
@@ -100,5 +101,8 @@ public class Board {
 
     public void addPiece(Piece piece) {
         gridPane.add(piece, piece.getCol(), piece.getRow());
+    }
+    public Paint getTileColor(int row, int col) {
+        return tiles[row][col].getFill();
     }
 }
