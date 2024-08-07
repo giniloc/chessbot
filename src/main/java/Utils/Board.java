@@ -96,7 +96,11 @@ public class Board {
         // Als een stuk is geselecteerd en een geldige beweging is, verplaats het stuk
         if (selectedPiece != null && selectedPiece.isValidMove(new Coordinate(row, col))) {
             // Verplaats het stuk
-            selectedPiece.move(new Coordinate(row, col));
+            if (getTileColor(row, col) == Color.RED) {
+                removePiece(selectedPiece.getRow(), selectedPiece.getCol());
+                selectedPiece.move(new Coordinate(row, col));
+            }
+
 
             // Reset de geselecteerde stuk
             selectedPiece = null;

@@ -73,9 +73,6 @@ public abstract class Piece extends ImageView {
     public void move(Coordinate coords) {
         Coordinate oldCoords = this.coords;
 
-        // Verwijder het stuk van de oude locatie op het bord
-        board.removePiece(this.row, this.col);
-
         // Update de interne coördinaten
         this.row = coords.getRow();
         this.col = coords.getCol();
@@ -90,7 +87,6 @@ public abstract class Piece extends ImageView {
         if (this.board.getTileColor(row, col) == Color.RED) {
             board.addPiece(this);
         }
-        System.out.println("Moved piece from " + oldCoords + " to " + this.coords);
     }
 
 

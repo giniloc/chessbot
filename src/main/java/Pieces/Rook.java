@@ -38,7 +38,6 @@ public class Rook extends Piece {
             // misschien dat hier nog een check in moet als je op dezelfde plek duwt dat hij dat dan ook als geldige zet ziet
         }
 
-        //
         Piece destinationPiece = board.getPiece(newCoords.getRow(), newCoords.getCol());
         if (destinationPiece != null && destinationPiece.isWhite == this.isWhite) {
             return false;

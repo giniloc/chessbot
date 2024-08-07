@@ -16,7 +16,6 @@ public class Coordinate {
     public int getCol() {
         return col;
     }
-
     @Override
     public String toString() {
         return "Coordinate{" + "row=" + row + ", col=" + col + '}';
