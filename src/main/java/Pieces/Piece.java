@@ -71,8 +71,6 @@ public abstract class Piece extends ImageView {
     }
 
     public void move(Coordinate coords) {
-        Coordinate oldCoords = this.coords;
-
         // Update de interne coördinaten
         this.row = coords.getRow();
         this.col = coords.getCol();
@@ -84,9 +82,8 @@ public abstract class Piece extends ImageView {
         // Update de positie van de afbeelding in de UI
         this.setLayoutX(col * 100);
         this.setLayoutY(row * 100);
-        if (this.board.getTileColor(row, col) == Color.RED) {
-            board.addPiece(this);
-        }
+        board.addPiece(this);
+
     }
 
 

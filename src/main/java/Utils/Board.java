@@ -101,7 +101,6 @@ public class Board {
                 selectedPiece.move(new Coordinate(row, col));
             }
 
-
             // Reset de geselecteerde stuk
             selectedPiece = null;
 
