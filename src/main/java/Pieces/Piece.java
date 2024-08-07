@@ -56,7 +56,19 @@ public abstract class Piece extends ImageView {
 
     public abstract ArrayList<Coordinate> getValidMoves();
 
-    public abstract boolean isSuicideMove(Coordinate newCoords);
+    public boolean isSuicideMove(Coordinate newCoords){
+        if(isWhite){
+            ArrayList<Piece> blackPieces = board.getBlackPieces();
+            //coverage bepalen van de black pieces voor de huidige move
+
+            //coverage bepalen van de black pieces met de newCoords
+            //PROBLEEM: als ge iets pakt dan is da hier wss nog nie weg
+
+        } else{
+            ArrayList<Piece> whitePieces = board.getWhitePieces();
+        }
+        return false;
+    }
 
     public void move(Coordinate coords) {
         Coordinate oldCoords = this.coords;

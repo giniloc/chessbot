@@ -1,10 +1,13 @@
 package Utils;
 
+import Pieces.King;
 import Pieces.Piece;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
+
+import java.util.ArrayList;
 
 public class Board {
 
@@ -14,6 +17,8 @@ public class Board {
     private Rectangle[][] tiles;
     private Piece selectedPiece;
     private GridPane gridPane;
+    private ArrayList<Piece> blackPieces;
+    private ArrayList<Piece> whitePieces;
 
     public Board(int rows, int cols, GridPane gridPane) {
         this.rows = rows;
@@ -21,6 +26,8 @@ public class Board {
         this.gridPane = gridPane;
         board = new Piece[rows][cols];
         tiles = new Rectangle[rows][cols];
+        blackPieces = new ArrayList<>();
+        whitePieces = new ArrayList<>();
     }
 
     public void highlightTile(int row, int col, Color color) {
@@ -101,7 +108,32 @@ public class Board {
 
     public void addPiece(Piece piece) {
         gridPane.add(piece, piece.getCol(), piece.getRow());
+        if(piece.isWhite()){whitePieces.add(piece);} else{blackPieces.add(piece);}
     }
+
+    public ArrayList<Piece> getWhitePieces() {
+        return whitePieces;
+    }
+
+    public ArrayList<Piece> getBlackPieces() {
+        return blackPieces;
+    }
+
+    public King getKing(boolean white){
+        ArrayList<Piece> p;
+        if(white){
+            p = whitePieces;
+        } else{
+            p = blackPieces;
+        }
+        for(Piece piece : p){
+            if(piece instanceof King){
+                return (King)piece;
+            }
+        }
+        return null;
+    }
+
     public Paint getTileColor(int row, int col) {
         return tiles[row][col].getFill();
     }
