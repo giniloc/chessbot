@@ -19,6 +19,7 @@ public class Board {
     private GridPane gridPane;
     private ArrayList<Piece> blackPieces;
     private ArrayList<Piece> whitePieces;
+    private boolean whiteTurn;
 
     public Board(int rows, int cols, GridPane gridPane) {
         this.rows = rows;
@@ -28,6 +29,7 @@ public class Board {
         tiles = new Rectangle[rows][cols];
         blackPieces = new ArrayList<>();
         whitePieces = new ArrayList<>();
+        whiteTurn = true; // Begin met witte beurt
     }
 
     public void highlightTile(int row, int col, Color color) {
@@ -95,10 +97,13 @@ public class Board {
     private void handleTileClick(int row, int col) {
         // Als een stuk is geselecteerd en een geldige beweging is, verplaats het stuk
         if (selectedPiece != null && selectedPiece.isValidMove(new Coordinate(row, col))) {
-            // Verplaats het stuk
+            // Verplaats het stuk alleen als de tegel rood is
             if (getTileColor(row, col) == Color.RED) {
                 removePiece(selectedPiece.getRow(), selectedPiece.getCol());
                 selectedPiece.move(new Coordinate(row, col));
+
+                // Wissel beurt
+                whiteTurn = !whiteTurn;
             }
 
             // Reset de geselecteerde stuk
@@ -111,7 +116,11 @@ public class Board {
 
     public void addPiece(Piece piece) {
         gridPane.add(piece, piece.getCol(), piece.getRow());
-        if(piece.isWhite()){whitePieces.add(piece);} else{blackPieces.add(piece);}
+        if (piece.isWhite()) {
+            whitePieces.add(piece);
+        } else {
+            blackPieces.add(piece);
+        }
     }
 
     public ArrayList<Piece> getWhitePieces() {
@@ -122,16 +131,11 @@ public class Board {
         return blackPieces;
     }
 
-    public King getKing(boolean white){
-        ArrayList<Piece> p;
-        if(white){
-            p = whitePieces;
-        } else{
-            p = blackPieces;
-        }
-        for(Piece piece : p){
-            if(piece instanceof King){
-                return (King)piece;
+    public King getKing(boolean white) {
+        ArrayList<Piece> pieces = white ? whitePieces : blackPieces;
+        for (Piece piece : pieces) {
+            if (piece instanceof King) {
+                return (King) piece;
             }
         }
         return null;
@@ -139,5 +143,9 @@ public class Board {
 
     public Paint getTileColor(int row, int col) {
         return tiles[row][col].getFill();
+    }
+
+    public boolean isWhiteTurn() {
+        return whiteTurn;
     }
 }

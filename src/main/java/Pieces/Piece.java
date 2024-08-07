@@ -2,7 +2,6 @@ package Pieces;
 
 import Utils.Board;
 import Utils.Coordinate;
-import com.example.chessbot.ChessScene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -18,7 +17,7 @@ public abstract class Piece extends ImageView {
     protected boolean isWhite;
     protected Board board;
 
-    public Piece(int row, int col, boolean isWhite,String imageName, Board board) {
+    public Piece(int row, int col, boolean isWhite, String imageName, Board board) {
         this.row = row;
         this.col = col;
         this.coords = new Coordinate(row, col);
@@ -33,6 +32,11 @@ public abstract class Piece extends ImageView {
     }
 
     private void handleMouseClick(MouseEvent event) {
+        // Controleer of het de beurt van dit stuk is
+        if (board.isWhiteTurn() != isWhite) {
+            return; // Als het niet de beurt van dit stuk is, doe niets
+        }
+
         // Reset tegelkleuren op het bord voordat de nieuwe geldige zetten worden getoond
         board.resetTileColors();
 
@@ -59,11 +63,10 @@ public abstract class Piece extends ImageView {
     public boolean isSuicideMove(Coordinate newCoords){
         if(isWhite){
             ArrayList<Piece> blackPieces = board.getBlackPieces();
-            //coverage bepalen van de black pieces voor de huidige move
+            // Coverage bepalen van de zwarte stukken voor de huidige zet
 
-            //coverage bepalen van de black pieces met de newCoords
-            //PROBLEEM: als ge iets pakt dan is da hier wss nog nie weg
-
+            // Coverage bepalen van de zwarte stukken met de nieuwe coördinaten
+            // PROBLEEM: als je iets pakt dan is dat hier waarschijnlijk nog niet weg
         } else{
             ArrayList<Piece> whitePieces = board.getWhitePieces();
         }
@@ -83,9 +86,7 @@ public abstract class Piece extends ImageView {
         this.setLayoutX(col * 100);
         this.setLayoutY(row * 100);
         board.addPiece(this);
-
     }
-
 
     public int getRow() {
         return row;
