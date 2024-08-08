@@ -30,6 +30,7 @@ public class Board {
         tiles = new Rectangle[rows][cols];
         blackPieces = new ArrayList<>();
         whitePieces = new ArrayList<>();
+        this.vsBot = vsBot;
     }
 
     public void highlightTile(int row, int col, Color color) {
@@ -165,5 +166,9 @@ public class Board {
 
     public boolean isWhiteTurn() {
         return whiteTurn;
+    }
+
+    public boolean isVsBot() {
+        return vsBot;
     }
 }

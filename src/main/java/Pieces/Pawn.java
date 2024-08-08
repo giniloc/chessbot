@@ -2,6 +2,12 @@ package Pieces;
 
 import Utils.Board;
 import Utils.Coordinate;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
@@ -214,9 +220,66 @@ public class Pawn extends Piece {
         return false;
     }
 
+
     @Override
     public void move(Coordinate coords) {
         super.move(coords);
-        hasMoved = true;
+        this.hasMoved = true;
+
+        // Check voor promotie
+        if ((isWhite && this.row == 0) || (!isWhite && this.row == 7)) {
+            if (board.isVsBot() && !isWhite) {
+                // Als de bot speelt (bijvoorbeeld altijd een koningin kiezen)
+                promoteTo(new Queen(this.row, this.col, this.isWhite, board));
+            } else {
+                // Als het een menselijke speler is
+                showPromotionMenu();
+            }
+        }
+    }
+
+    private void showPromotionMenu() {
+        // Maak een menu aan voor promotie
+        Stage promotionStage = new Stage();
+        VBox promotionMenu = new VBox(10);
+        promotionMenu.setAlignment(Pos.CENTER);
+
+        Button queenButton = new Button("Queen");
+        Button rookButton = new Button("Rook");
+        Button bishopButton = new Button("Bishop");
+        Button knightButton = new Button("Knight");
+
+        queenButton.setOnAction(e -> {
+            promoteTo(new Queen(this.row, this.col, this.isWhite, board));
+            promotionStage.close();
+        });
+
+        rookButton.setOnAction(e -> {
+            promoteTo(new Rook(this.row, this.col, this.isWhite, board));
+            promotionStage.close();
+        });
+
+        bishopButton.setOnAction(e -> {
+            promoteTo(new Bishop(this.row, this.col, this.isWhite, board));
+            promotionStage.close();
+        });
+
+        knightButton.setOnAction(e -> {
+            promoteTo(new Knight(this.row, this.col, this.isWhite, board));
+            promotionStage.close();
+        });
+
+        promotionMenu.getChildren().addAll(queenButton, rookButton, bishopButton, knightButton);
+
+        Scene promotionScene = new Scene(promotionMenu, 200, 200);
+        promotionStage.setScene(promotionScene);
+        promotionStage.setTitle("Promote Pawn");
+        promotionStage.showAndWait();  // Wacht tot de speler een keuze maakt
+    }
+
+    private void promoteTo(Piece newPiece) {
+      //  board.addPiece(newPiece);  // Plaats het nieuwe stuk op de board (dit mag dus niet for some reason)
+        board.removePiece(this.row, this.col);  // Verwijder de pion
+        //board.addPiece(newPiece);  // Plaats het nieuwe stuk op het board (hier mag je het ook niet zetten want dan werkt het ook niet
     }
 }
