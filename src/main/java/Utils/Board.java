@@ -20,8 +20,9 @@ public class Board {
     private ArrayList<Piece> blackPieces;
     private ArrayList<Piece> whitePieces;
     private boolean whiteTurn = true; //begin met wit
+    private boolean vsBot;
 
-    public Board(int rows, int cols, GridPane gridPane) {
+    public Board(int rows, int cols, GridPane gridPane, boolean vsBot) {
         this.rows = rows;
         this.cols = cols;
         this.gridPane = gridPane;

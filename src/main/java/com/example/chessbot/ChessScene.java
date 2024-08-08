@@ -3,10 +3,10 @@ package com.example.chessbot;
 import Pieces.*;
 import Utils.Board;
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
+import javafx.scene.control.Button;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
@@ -15,11 +15,42 @@ public class ChessScene extends Application {
 
     public static final int TILE_SIZE = 100;
     private Board board;
+    private Stage primaryStage;  // We bewaren een referentie naar de primaryStage
 
     @Override
     public void start(Stage primaryStage) {
+        this.primaryStage = primaryStage;  // Bewaar de primaryStage
+        showMenu();
+    }
+
+    private void showMenu() {
+        VBox menu = new VBox(20);
+        menu.setAlignment(Pos.CENTER);
+
+        Button pvpButton = new Button("1v1");
+        Button pvBotButton = new Button("1vBot");
+
+        // Style de knoppen
+        pvpButton.setStyle("-fx-font-size: 20pt;");
+        pvBotButton.setStyle("-fx-font-size: 20pt;");
+        pvpButton.setPrefSize(200, 100);
+        pvBotButton.setPrefSize(200, 100);
+
+        pvpButton.setOnAction(e -> startGame(false));  // Start 1v1 game
+        pvBotButton.setOnAction(e -> startGame(true)); // Start 1vBot game
+
+        menu.getChildren().addAll(pvpButton, pvBotButton);
+
+        StackPane root = new StackPane(menu);
+        Scene menuScene = new Scene(root, TILE_SIZE * 8, TILE_SIZE * 8);
+        primaryStage.setTitle("Chess Menu");
+        primaryStage.setScene(menuScene);
+        primaryStage.show();
+    }
+
+    private void startGame(boolean vsBot) {
         GridPane gridPane = new GridPane();
-        board = new Board(8, 8, gridPane);
+        board = new Board(8, 8, gridPane, vsBot);  // Pass the vsBot flag to the Board
 
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
@@ -48,10 +79,9 @@ public class ChessScene extends Application {
 
         setupPieces(gridPane);
 
-        Scene scene = new Scene(gridPane, TILE_SIZE * 8, TILE_SIZE * 8);
-
-        primaryStage.setTitle("2D Chess Board");
-        primaryStage.setScene(scene);
+        Scene gameScene = new Scene(gridPane, TILE_SIZE * 8, TILE_SIZE * 8);
+        primaryStage.setTitle("Chess Game");
+        primaryStage.setScene(gameScene);
         primaryStage.show();
     }
 
