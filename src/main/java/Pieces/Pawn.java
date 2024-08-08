@@ -280,6 +280,6 @@ public class Pawn extends Piece {
     private void promoteTo(Piece newPiece) {
       //  board.addPiece(newPiece);  // Plaats het nieuwe stuk op de board (dit mag dus niet for some reason)
         board.removePiece(this.row, this.col);  // Verwijder de pion
-        //board.addPiece(newPiece);  // Plaats het nieuwe stuk op het board (hier mag je het ook niet zetten want dan werkt het ook niet
+      //  board.addPiece(newPiece);  // Plaats het nieuwe stuk op het board (hier mag je het ook niet zetten want dan werkt het ook niet)
     }
 }
