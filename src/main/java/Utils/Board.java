@@ -159,6 +159,12 @@ public class Board {
         }
         return null;
     }
+    public void changePiece(Piece newPiece) {
+        this.placePiece(newPiece, newPiece.getRow(), newPiece.getCol());
+        newPiece.fitWidthProperty().bind(gridPane.widthProperty().divide(8));
+        newPiece.fitHeightProperty().bind(gridPane.heightProperty().divide(8));
+        gridPane.add(newPiece, newPiece.getCol(), newPiece.getRow());
+    }
 
     public Paint getTileColor(int row, int col) {
         return tiles[row][col].getFill();

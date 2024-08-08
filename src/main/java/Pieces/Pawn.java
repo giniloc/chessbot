@@ -2,9 +2,11 @@ package Pieces;
 
 import Utils.Board;
 import Utils.Coordinate;
+import com.example.chessbot.ChessScene;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -280,6 +282,7 @@ public class Pawn extends Piece {
     private void promoteTo(Piece newPiece) {
       //  board.addPiece(newPiece);  // Plaats het nieuwe stuk op de board (dit mag dus niet for some reason)
         board.removePiece(this.row, this.col);  // Verwijder de pion
+        board.changePiece(newPiece);  // Verander het stuk in het nieuwe stuk
       //  board.addPiece(newPiece);  // Plaats het nieuwe stuk op het board (hier mag je het ook niet zetten want dan werkt het ook niet)
     }
 }
