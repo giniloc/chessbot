@@ -82,6 +82,46 @@ public abstract class Piece extends ImageView {
         return false;
     }
 
+//GINILOC ZIJN PROBEERSEL OP EEN IsSuicideMove, WERKT NOG NIET
+//public boolean isSuicideMove(Coordinate newCoords) {
+//    // Sla de huidige positie en het stuk op de nieuwe coördinaten op
+//    int currentRow = this.row;
+//    int currentCol = this.col;
+//    Piece targetPiece = board.getPiece(newCoords.getRow(), newCoords.getCol());
+//
+//    // Simuleer de zet door het stuk te verplaatsen
+//    board.placePiece(null, currentRow, currentCol);  // Verwijder het stuk van zijn huidige locatie
+//    board.placePiece(this, newCoords.getRow(), newCoords.getCol());  // Plaats het stuk op de nieuwe locatie
+//
+//    // Controleer of de koning na de zet schaak staat
+//    boolean isInCheck = isKingInCheck(isWhite);
+//
+//    // Herstel de oorspronkelijke situatie
+//    board.placePiece(this, currentRow, currentCol);  // Plaats het stuk terug op zijn oorspronkelijke locatie
+//    board.placePiece(targetPiece, newCoords.getRow(), newCoords.getCol());  // Plaats het doelstuk (indien aanwezig) terug
+//
+//    return isInCheck;
+//}
+
+    private boolean isKingInCheck(boolean isWhite) {
+        King king = board.getKing(isWhite);
+        Coordinate kingCoords = king.getCoords();
+
+        ArrayList<Piece> opponentPieces = isWhite ? board.getBlackPieces() : board.getWhitePieces();
+
+        // Controleer of een van de tegenstander stukken de koning kan slaan
+        for (Piece piece : opponentPieces) {
+            ArrayList<Coordinate> validMoves = piece.getValidMoves();
+            for (Coordinate move : validMoves) {
+                if (move.equals(kingCoords)) {
+                    return true;  // De koning staat schaak
+                }
+            }
+        }
+        return false;  // De koning staat niet schaak
+    }
+
+
     public void move(Coordinate coords) {
         // Update de interne coördinaten
         this.row = coords.getRow();

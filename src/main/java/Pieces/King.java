@@ -26,6 +26,10 @@ public class King extends Piece{
     public boolean isSuicideMove(Coordinate newCoords) {
         return false;
     }
+
+    public Coordinate getCoords() {
+        return coords;
+    }
 }
 
 
