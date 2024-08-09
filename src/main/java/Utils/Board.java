@@ -19,7 +19,7 @@ public class Board {
     private GridPane gridPane;
     private ArrayList<Piece> blackPieces;
     private ArrayList<Piece> whitePieces;
-    private boolean whiteTurn = true; //begin met wit
+    private boolean whiteTurn = true; // Wit begint
     private boolean vsBot;
 
     public Board(int rows, int cols, GridPane gridPane, boolean vsBot) {
@@ -102,7 +102,7 @@ public class Board {
         }
     }
 
-    private void handleTileClick(int row, int col) {
+    public void handleTileClick(int row, int col) {
         // Als een stuk is geselecteerd en een geldige beweging is, verplaats het stuk
         if (selectedPiece != null && selectedPiece.isValidMove(new Coordinate(row, col))) {
             // Verplaats het stuk
@@ -176,5 +176,9 @@ public class Board {
 
     public boolean isVsBot() {
         return vsBot;
+    }
+
+    public Piece getSelectedPiece() {
+        return selectedPiece;
     }
 }

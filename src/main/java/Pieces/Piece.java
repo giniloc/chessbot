@@ -34,7 +34,15 @@ public abstract class Piece extends ImageView {
     private void handleMouseClick(MouseEvent event) {
         // Controleer of het de beurt van dit stuk is
         if (board.isWhiteTurn() != isWhite) {
-            return; // Als het niet de beurt van dit stuk is, doe niets
+            // Controleer of het stuk vijandig is en binnen de geldige zetten valt
+            if (board.getSelectedPiece() != null) {
+                Piece selectedPiece = board.getSelectedPiece();
+                if (selectedPiece.isValidMove(coords)) {
+                    // Voer de capturing move uit door het doorsturen van de klik naar de onderliggende tegel
+                    board.handleTileClick(row, col);
+                }
+            }
+            return; // Als het niet de beurt van dit stuk is, en het stuk is niet vijandig, doe niets
         }
 
         // Reset tegelkleuren op het bord voordat de nieuwe geldige zetten worden getoond
@@ -46,6 +54,7 @@ public abstract class Piece extends ImageView {
         // Markeer geldige zetten voor het geselecteerde stuk
         highlightValidMoves();
     }
+
 
     protected void highlightValidMoves() {
         ArrayList<Coordinate> validMoves = getValidMoves();
