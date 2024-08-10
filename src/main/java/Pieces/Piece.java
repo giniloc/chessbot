@@ -81,45 +81,30 @@ public abstract class Piece extends ImageView {
         }
         return false;
     }
+    public boolean tryMove(Coordinate newCoords) {
+        // Bewaar de huidige positie en het stuk op de doelcoördinaat
+        int originalRow = this.row;
+        int originalCol = this.col;
+        Piece targetPiece = board.getPiece(newCoords.getRow(), newCoords.getCol());
 
-//GINILOC ZIJN PROBEERSEL OP EEN IsSuicideMove, WERKT NOG NIET
-//public boolean isSuicideMove(Coordinate newCoords) {
-//    // Sla de huidige positie en het stuk op de nieuwe coördinaten op
-//    int currentRow = this.row;
-//    int currentCol = this.col;
-//    Piece targetPiece = board.getPiece(newCoords.getRow(), newCoords.getCol());
-//
-//    // Simuleer de zet door het stuk te verplaatsen
-//    board.placePiece(null, currentRow, currentCol);  // Verwijder het stuk van zijn huidige locatie
-//    board.placePiece(this, newCoords.getRow(), newCoords.getCol());  // Plaats het stuk op de nieuwe locatie
-//
-//    // Controleer of de koning na de zet schaak staat
-//    boolean isInCheck = isKingInCheck(isWhite);
-//
-//    // Herstel de oorspronkelijke situatie
-//    board.placePiece(this, currentRow, currentCol);  // Plaats het stuk terug op zijn oorspronkelijke locatie
-//    board.placePiece(targetPiece, newCoords.getRow(), newCoords.getCol());  // Plaats het doelstuk (indien aanwezig) terug
-//
-//    return isInCheck;
-//}
+        // Verplaats het stuk tijdelijk naar de nieuwe positie
+        board.removePiece(originalRow, originalCol);
+        board.placePiece(this, newCoords.getRow(), newCoords.getCol());
 
-    private boolean isKingInCheck(boolean isWhite) {
-        King king = board.getKing(isWhite);
-        Coordinate kingCoords = king.getCoords();
+        // Controleer of de koning nu schaak staat
+        boolean isInCheck = board.getKing(this.isWhite).isInCheck();
 
-        ArrayList<Piece> opponentPieces = isWhite ? board.getBlackPieces() : board.getWhitePieces();
-
-        // Controleer of een van de tegenstander stukken de koning kan slaan
-        for (Piece piece : opponentPieces) {
-            ArrayList<Coordinate> validMoves = piece.getValidMoves();
-            for (Coordinate move : validMoves) {
-                if (move.equals(kingCoords)) {
-                    return true;  // De koning staat schaak
-                }
-            }
+        if (isInCheck) {
+            // Als de koning schaak staat, draai de zet terug
+            board.placePiece(this, originalRow, originalCol);
+            board.placePiece(targetPiece, newCoords.getRow(), newCoords.getCol());
+            return false; // Zet is niet toegestaan
         }
-        return false;  // De koning staat niet schaak
+
+        // Zet is toegestaan, voltooi de zet
+        return true;
     }
+
 
 
     public void move(Coordinate coords) {
