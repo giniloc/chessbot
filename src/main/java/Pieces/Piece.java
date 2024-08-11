@@ -69,41 +69,22 @@ public abstract class Piece extends ImageView {
 
     public abstract ArrayList<Coordinate> getValidMoves();
 
-    public boolean isSuicideMove(Coordinate newCoords){
-        if(isWhite){
-            ArrayList<Piece> blackPieces = board.getBlackPieces();
-            // Coverage bepalen van de zwarte stukken voor de huidige zet
+//    public boolean isSuicideMove(Coordinate newCoords){
+//        if(isWhite){
+//            ArrayList<Piece> blackPieces = board.getBlackPieces();
+//            // Coverage bepalen van de zwarte stukken voor de huidige zet
+//
+//            // Coverage bepalen van de zwarte stukken met de nieuwe coördinaten
+//            // PROBLEEM: als je iets pakt dan is dat hier waarschijnlijk nog niet weg
+//        } else{
+//            ArrayList<Piece> whitePieces = board.getWhitePieces();
+//        }
+//        return false;
+//    }
+public boolean isSuicideMove(Coordinate newCoords) {
+   return false;
+}
 
-            // Coverage bepalen van de zwarte stukken met de nieuwe coördinaten
-            // PROBLEEM: als je iets pakt dan is dat hier waarschijnlijk nog niet weg
-        } else{
-            ArrayList<Piece> whitePieces = board.getWhitePieces();
-        }
-        return false;
-    }
-    public boolean tryMove(Coordinate newCoords) {
-        // Bewaar de huidige positie en het stuk op de doelcoördinaat
-        int originalRow = this.row;
-        int originalCol = this.col;
-        Piece targetPiece = board.getPiece(newCoords.getRow(), newCoords.getCol());
-
-        // Verplaats het stuk tijdelijk naar de nieuwe positie
-        board.removePiece(originalRow, originalCol);
-        board.placePiece(this, newCoords.getRow(), newCoords.getCol());
-
-        // Controleer of de koning nu schaak staat
-        boolean isInCheck = board.getKing(this.isWhite).isInCheck();
-
-        if (isInCheck) {
-            // Als de koning schaak staat, draai de zet terug
-            board.placePiece(this, originalRow, originalCol);
-            board.placePiece(targetPiece, newCoords.getRow(), newCoords.getCol());
-            return false; // Zet is niet toegestaan
-        }
-
-        // Zet is toegestaan, voltooi de zet
-        return true;
-    }
 
 
 

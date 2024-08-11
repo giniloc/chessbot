@@ -2,12 +2,9 @@ package Pieces;
 
 import Utils.Board;
 import Utils.Coordinate;
-import com.example.chessbot.ChessScene;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -219,8 +216,10 @@ public class Pawn extends Piece {
 
     @Override
     public boolean isSuicideMove(Coordinate newCoords) {
-        return false;
+       return false;
     }
+
+
 
 
     @Override

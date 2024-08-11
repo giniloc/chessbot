@@ -11,7 +11,6 @@ public class King extends Piece{
 
     }
 
-
     @Override
     public boolean isValidMove(Coordinate newCoords) {
         int newRow = newCoords.getRow();
@@ -63,18 +62,7 @@ public class King extends Piece{
         return coords;
     }
 
-    public boolean isInCheck() {
-        ArrayList<Piece> opponentPieces = isWhite ? board.getBlackPieces() : board.getWhitePieces();
-        Coordinate kingCoords = this.getCoords();
 
-        for (Piece piece : opponentPieces) {
-            ArrayList<Coordinate> opponentMoves = piece.getValidMoves();
-            if (opponentMoves.contains(kingCoords)) {
-                return true;  // Koning staat schaak
-            }
-        }
-        return false;  // Koning staat niet schaak
-    }
 }
 
 

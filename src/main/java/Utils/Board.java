@@ -1,13 +1,12 @@
 package Utils;
 
-import Pieces.King;
+
 import Pieces.Piece;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 
-import java.util.ArrayList;
 
 public class Board {
 
@@ -17,8 +16,6 @@ public class Board {
     private Rectangle[][] tiles;
     private Piece selectedPiece;
     private GridPane gridPane;
-    private ArrayList<Piece> blackPieces;
-    private ArrayList<Piece> whitePieces;
     private boolean whiteTurn = true; // Wit begint
     private boolean vsBot;
 
@@ -28,8 +25,6 @@ public class Board {
         this.gridPane = gridPane;
         board = new Piece[rows][cols];
         tiles = new Rectangle[rows][cols];
-        blackPieces = new ArrayList<>();
-        whitePieces = new ArrayList<>();
         this.vsBot = vsBot;
     }
 
@@ -70,11 +65,6 @@ public class Board {
         Piece piece = board[row][col];
         if (piece != null) {
             gridPane.getChildren().remove(piece);
-            if (piece.isWhite()) {
-                whitePieces.remove(piece);
-            } else {
-                blackPieces.remove(piece);
-            }
         }
         board[row][col] = null;
     }
@@ -130,35 +120,10 @@ public class Board {
 
     public void addPiece(Piece piece) {
         gridPane.add(piece, piece.getCol(), piece.getRow());
-        if(piece.isWhite()){
-            whitePieces.add(piece);
-        } else{
-            blackPieces.add(piece);
-        }
     }
 
-    public ArrayList<Piece> getWhitePieces() {
-        return whitePieces;
-    }
 
-    public ArrayList<Piece> getBlackPieces() {
-        return blackPieces;
-    }
 
-    public King getKing(boolean white){
-        ArrayList<Piece> p;
-        if(white){
-            p = whitePieces;
-        } else{
-            p = blackPieces;
-        }
-        for(Piece piece : p){
-            if(piece instanceof King){
-                return (King)piece;
-            }
-        }
-        return null;
-    }
     public void changePiece(Piece newPiece) {
         this.placePiece(newPiece, newPiece.getRow(), newPiece.getCol());
         newPiece.fitWidthProperty().bind(gridPane.widthProperty().divide(8));
