@@ -61,6 +61,9 @@ public class King extends Piece{
     public Coordinate getCoords() {
         return coords;
     }
+    public King getKing() {
+        return this;
+    }
 
 
 }

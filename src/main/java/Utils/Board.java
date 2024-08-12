@@ -1,6 +1,7 @@
 package Utils;
 
 
+import Pieces.King;
 import Pieces.Piece;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -108,6 +109,17 @@ public class Board {
 
                 // Wissel van beurt
                 whiteTurn = !whiteTurn;
+
+                // Controleer of de koning schaak staat
+                boolean isWhiteInCheck = isKingInCheck(true);
+                boolean isBlackInCheck = isKingInCheck(false);
+
+                if (isWhiteInCheck) {
+                    System.out.println("Witte koning staat schaak!");
+                }
+                if (isBlackInCheck) {
+                    System.out.println("Zwarte koning staat schaak!");
+                }
             }
 
             // Reset de geselecteerde stuk
@@ -117,6 +129,7 @@ public class Board {
             resetTileColors();
         }
     }
+
 
     public void addPiece(Piece piece) {
         gridPane.add(piece, piece.getCol(), piece.getRow());
@@ -130,6 +143,36 @@ public class Board {
         newPiece.fitHeightProperty().bind(gridPane.heightProperty().divide(8));
         gridPane.add(newPiece, newPiece.getCol(), newPiece.getRow());
     }
+    public boolean isKingInCheck(boolean isWhite) {
+        // Zoek de positie van de koning
+        Coordinate kingPosition = findKingPosition(isWhite);
+
+        // Controleer of een vijandelijk stuk de koning kan slaan
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                Piece piece = getPiece(row, col);
+                if (piece != null && piece.isWhite() != isWhite) {
+                    if (piece.isValidMove(kingPosition)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    private Coordinate findKingPosition(boolean isWhite) {
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                Piece piece = getPiece(row, col);
+                if (piece instanceof King && piece.isWhite() == isWhite) {
+                    return new Coordinate(row, col);
+                }
+            }
+        }
+        return null; // Dit zou eigenlijk nooit moeten gebeuren
+    }
+
 
     public Paint getTileColor(int row, int col) {
         return tiles[row][col].getFill();

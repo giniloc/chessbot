@@ -15,14 +15,23 @@ public class Knight extends Piece {
 
     @Override
     public boolean isValidMove(Coordinate newCoords) {
+        int newRow = newCoords.getRow();
+        int newCol = newCoords.getCol();
 
-        Piece destinationPiece = board.getPiece(newCoords.getRow(), newCoords.getCol());
-        if (destinationPiece != null && destinationPiece.isWhite == this.isWhite) {
-            return false;
-        }
+        int rowDiff = Math.abs(newRow - this.row);
+        int colDiff = Math.abs(newCol - this.col);
 
-        return true;
+        // Controleer of de beweging een L-vorm heeft
+        boolean isLShapedMove = (rowDiff == 2 && colDiff == 1) || (rowDiff == 1 && colDiff == 2);
+
+        // Controleer of de bestemming niet bezet is door een stuk van dezelfde kleur
+        Piece destinationPiece = board.getPiece(newRow, newCol);
+        boolean isDestinationOccupiedBySameColor = destinationPiece != null && destinationPiece.isWhite() == this.isWhite();
+
+        // De zet is geldig als het een L-vormige beweging is en de bestemming niet bezet is door een stuk van dezelfde kleur
+        return isLShapedMove && !isDestinationOccupiedBySameColor;
     }
+
 
     @Override
     public ArrayList<Coordinate> getValidMoves() {
