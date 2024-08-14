@@ -4,6 +4,7 @@ import Utils.Board;
 import Utils.Coordinate;
 import java.util.ArrayList;
 public class Rook extends Piece {
+    private boolean hasMoved = false;
     public Rook(int row, int col, boolean isWhite, Board board) {
         super(row, col, isWhite, isWhite ? "whiteRook.png" : "blackRook.png", board);
     }
@@ -70,6 +71,15 @@ public class Rook extends Piece {
         }
 
         return validMoves;
+    }
+    @Override
+    public void move(Coordinate coords) {
+        super.move(coords);
+        hasMoved = true; // Markeer dat de toren is bewogen
+    }
+
+    public boolean hasMoved() {
+        return hasMoved;
     }
 
     @Override

@@ -6,9 +6,15 @@ import Utils.Coordinate;
 import java.util.ArrayList;
 
 public class King extends Piece{
+    private boolean hasMoved = false;
     public King(int row, int col, boolean isWhite, Board board) {
         super(row, col, isWhite, isWhite ? "whiteKing.png" : "blackKing.png", board);
 
+    }
+    @Override
+    public void move(Coordinate coords) {
+        super.move(coords);
+        hasMoved = true; // Markeer dat de koning is bewogen
     }
 
     @Override
@@ -28,20 +34,15 @@ public class King extends Piece{
     public ArrayList<Coordinate> getValidMoves() {
         ArrayList<Coordinate> validMoves = new ArrayList<>();
 
-        // Controleer alle mogelijke zetten binnen 1 veld rondom de koning
+        // Voeg reguliere koningbewegingen toe
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
                 int newRow = row + i;
                 int newCol = col + j;
-
-                // Controleer of de nieuwe positie binnen het bord ligt
                 if (newRow >= 0 && newRow < board.getRows() && newCol >= 0 && newCol < board.getCols()) {
                     Piece pieceAtNewPosition = board.getPiece(newRow, newCol);
                     Coordinate newCoords = new Coordinate(newRow, newCol);
-
-                    // Controleer of de zet geldig is volgens de koningbeweging
                     if (isValidMove(newCoords)) {
-                        // Controleer of er geen stuk van dezelfde kleur op de nieuwe positie staat
                         if (pieceAtNewPosition == null || pieceAtNewPosition.isWhite() != this.isWhite()) {
                             validMoves.add(newCoords);
                         }
@@ -49,8 +50,40 @@ public class King extends Piece{
                 }
             }
         }
+
+        // Controleer voor rokade
+        if (!hasMoved && !board.isKingInCheck(isWhite)) {
+            // Kleine rokade (O-O)
+            if (canCastle(true)) {
+                validMoves.add(new Coordinate(row, col + 2));
+            }
+            // Grote rokade (O-O-O)
+            if (canCastle(false)) {
+                validMoves.add(new Coordinate(row, col - 2));
+            }
+        }
+
         return validMoves;
     }
+
+    private boolean canCastle(boolean kingside) {
+        int rookCol = kingside ? 7 : 0;
+        int direction = kingside ? 1 : -1;
+
+        Piece rook = board.getPiece(row, rookCol);
+
+        // Controleer of de toren nog niet bewogen is en dat er geen stukken tussen de koning en de toren staan
+        if (rook instanceof Rook && !((Rook) rook).hasMoved()) {
+            for (int i = col + direction; i != rookCol; i += direction) {
+                if (board.getPiece(row, i) != null) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
 
 
     @Override
@@ -63,6 +96,9 @@ public class King extends Piece{
     }
     public King getKing() {
         return this;
+    }
+    public boolean hasMoved() {
+        return hasMoved;
     }
 
 

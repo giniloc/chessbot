@@ -120,6 +120,7 @@ public class Board {
                 if (isBlackInCheck) {
                     System.out.println("Zwarte koning staat schaak!");
                 }
+
             }
 
             // Reset de geselecteerde stuk
